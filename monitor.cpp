@@ -20,6 +20,10 @@ using std::cout, std::flush, std::this_thread::sleep_for, std::chrono::seconds;
 
 // Helper function to avoid code duplication
 void blinkAlert(const char* message) {
+#ifdef UNIT_TEST
+    // In unit test mode, skip blinking and output to avoid delays and cluttering test output
+    (void)message;
+#else
     cout << message << "\n";
     for (int i = 0; i < 6; i++) {
         cout << "\r* " << flush;
@@ -28,6 +32,7 @@ void blinkAlert(const char* message) {
         sleep_for(seconds(1));
     }
     cout << "\r  \r" << flush; // Clear the blinking indicator after done
+#endif
 }
 
 int vitalsOk(float temperature, float pulseRate, float spo2) {
